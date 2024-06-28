@@ -1,8 +1,8 @@
 import {FormEvent, useState} from "react";
 import axios from 'axios';
-import Rating from '../../components/feedback/Rating'
-import Comment from "../../components/feedback/Comment";
-import FavoriteCharacter from "../../components/feedback/FavoriteCharacter";
+import Rating from '../../components/feedback/rating/Rating'
+import Comment from "../../components/feedback/comment/Comment";
+import FavoriteCharacter from "../../components/feedback/favoritecharacter/FavoriteCharacter";
 import "./FeedbackPage.css"
 import { useLocation } from "react-router-dom";
 
@@ -74,8 +74,8 @@ const FeedbackPage = () => {
                         rating={imageSatisfaction}
                         setRating={setImageSatisfaction}
                     />
-                    <Comment comment={comment} setComment={setComment}></Comment>
-                    <FavoriteCharacter favoriteCharacter={favoriteCharacter} setFavoriteCharacter={setFavoriteCharacter}></FavoriteCharacter>
+                    <Comment comment={comment} setComment={setComment}/>
+                    <FavoriteCharacter favoriteCharacter={favoriteCharacter} setFavoriteCharacter={setFavoriteCharacter}/>
                     <button className="feedback-page-form-button" type="submit">
                         피드백 제출
                     </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Rating.css'
-import {StarIcon} from'./StarIcon';
+import {StarIcon} from '../staricon/StarIcon';
 
 export interface RatingProps {
     label: string;
