@@ -1,12 +1,12 @@
 import {FormEvent, useState} from "react";
 import axios from 'axios';
-import Rating from '../../components/feedback/Rating'
-import Comment from "../../components/feedback/Comment";
-import FavoriteCharacter from "../../components/feedback/FavoriteCharacter";
+import Rating from '../../components/feedback/rating/Rating'
+import Comment from "../../components/feedback/comment/Comment";
+import FavoriteCharacter from "../../components/feedback/favoritecharacter/FavoriteCharacter";
 import "./FeedbackPage.css"
-import { useLocation } from "react-router-dom";
+import { NavigateFunction, useNavigate, useLocation } from 'react-router-dom';
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
 const FeedbackPage = () => {
     const {state} = useLocation();
@@ -18,6 +18,7 @@ const FeedbackPage = () => {
     const [comment, setComment] = useState<string>("");
     const [favoriteCharacter, setFavoriteCharacter] = useState<string>("");
     const MAX_CONTENT_LENGTH = 500;
+    const navigate: NavigateFunction = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -48,6 +49,8 @@ const FeedbackPage = () => {
                     favoriteCharacter,
                     diaryId}
             );
+            navigate('/feedback-thanks', {
+            });
         }
     };
 
@@ -74,8 +77,8 @@ const FeedbackPage = () => {
                         rating={imageSatisfaction}
                         setRating={setImageSatisfaction}
                     />
-                    <Comment comment={comment} setComment={setComment}></Comment>
-                    <FavoriteCharacter favoriteCharacter={favoriteCharacter} setFavoriteCharacter={setFavoriteCharacter}></FavoriteCharacter>
+                    <Comment comment={comment} setComment={setComment}/>
+                    <FavoriteCharacter favoriteCharacter={favoriteCharacter} setFavoriteCharacter={setFavoriteCharacter}/>
                     <button className="feedback-page-form-button" type="submit">
                         피드백 제출
                     </button>

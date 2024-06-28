@@ -1,0 +1,80 @@
+:root {
+    --background: #f0f0f0;
+    --primary: #ff6347;
+    --foreground: #333333;
+    --muted-foreground: #888888;
+}
+
+.flex {
+    display: flex;
+}
+.min-h-100dvh {
+    min-height: 100vh;
+}
+.flex-col {
+    flex-direction: column;
+}
+.items-center {
+    align-items: center;
+}
+.justify-center {
+    justify-content: center;
+}
+.bg-background {
+    background-color: var(--background);
+}
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+.sm-px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+.lg-px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.max-w-md {
+    max-width: 28rem;
+}
+.text-center {
+    text-align: center;
+}
+.h-12 {
+    height: 3rem;
+}
+.w-12 {
+    width: 3rem;
+}
+.text-primary {
+    color: var(--primary);
+}
+.mt-4 {
+    margin-top: 1rem;
+}
+.text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+.font-bold {
+    font-weight: 700;
+}
+.tracking-tight {
+    letter-spacing: -0.015625rem;
+}
+.text-foreground {
+    color: var(--foreground);
+}
+.sm-text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+.text-muted-foreground {
+    color: var(--muted-foreground);
+}

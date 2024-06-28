@@ -18,7 +18,7 @@ const Comment = (props: CommentProps) => {
                 id="comments"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-            ></textarea>
+            />
         </div>
     )
 }

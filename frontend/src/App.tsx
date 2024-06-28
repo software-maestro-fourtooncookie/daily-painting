@@ -5,6 +5,7 @@ import DiaryFormPage from './pages/DiaryFormPage/DiaryFormPage';
 import { Route, Routes } from 'react-router-dom';
 import DiaryResultPage from './pages/DiaryResultPage/DiaryResultPage';
 import FeedbackPage from './pages/FeedbackPage/FeedbackPage';
+import FeedbackThanksPage from "./pages/FeedbackThanksPage/FeedbackThanksPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<DiaryFormPage />} />
         <Route path="/diary/show" element={<DiaryResultPage />}/>
         <Route path="/feedback" element={<FeedbackPage />} />
+        <Route path="/feedback-thanks" element={<FeedbackThanksPage />} />
       </Routes>
     </div>
   );
