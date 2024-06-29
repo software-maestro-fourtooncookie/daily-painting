@@ -1,6 +1,8 @@
 package com.startingblue.dailypainting.ai.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.startingblue.dailypainting.ai.service.scenario.ScenarioService;
+import com.startingblue.dailypainting.ai.service.vision.VisionService;
 import com.startingblue.dailypainting.diary.dto.DiarySaveRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,22 +17,23 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class AIDiaryService {
 
-    private final SynarioService aiSynarioService;
+    private final ScenarioService aiScenarioService;
     private final VisionService aiVisionService;
     private final DiaryConvertService diaryConvertService;
 
     @Async
     public CompletableFuture<String> generateImageFromDiary(final DiarySaveRequest diarySaveRequest) {
-
         String diaryContent = diaryConvertService.convertDiarySaveRequestToString(diarySaveRequest);
 
-        JsonNode synopsis = aiSynarioService.sendDiaryToLLM(diaryContent);
+        // 비동기적으로 시나리오 생성
+        CompletableFuture<JsonNode> scenarioFuture = CompletableFuture.supplyAsync(() -> {
+            return aiScenarioService.sendDiaryToLLM(diaryContent);
+        });
 
-        String synopsisString = diaryConvertService.convertSynopsisJsonToString(synopsis);
-
-        String imageUrl = aiVisionService.sendSynopsisToVision(synopsisString);
-
-        return CompletableFuture.completedFuture(imageUrl);
+        // 비동기적으로 이미지 URL 생성
+        return scenarioFuture.thenApplyAsync(scenario -> {
+            String scenarioString = diaryConvertService.convertScenarioJsonToString(scenario);
+            return aiVisionService.sendScenarioToVision(scenarioString);
+        });
     }
-
 }

@@ -33,13 +33,13 @@ public class PromptDiaryConvertService implements DiaryConvertService {
     }
 
     @Override
-    public String convertSynopsisJsonToString(final JsonNode synopsis) {
+    public String convertScenarioJsonToString(final JsonNode scenario) {
         List<String> scenePrompts = new ArrayList<>();
 
-        Iterator<JsonNode> synopsisElements = synopsis.elements();
+        Iterator<JsonNode> scenarioElements = scenario.elements();
 
-        while(synopsisElements.hasNext()) {
-            JsonNode element = synopsisElements.next();
+        while(scenarioElements.hasNext()) {
+            JsonNode element = scenarioElements.next();
 
             List<String> personPrompts = new ArrayList<>();
 
@@ -57,9 +57,9 @@ public class PromptDiaryConvertService implements DiaryConvertService {
             }
 
             String elementPrompt = String.format(SCENE_PROMPT,
-                    synopsis.get("background"),
-                    synopsis.get("time"),
-                    synopsis.get("weather"),
+                    scenario.get("background"),
+                    scenario.get("time"),
+                    scenario.get("weather"),
                     String.join(" ", personPrompts));
 
             scenePrompts.add(elementPrompt);

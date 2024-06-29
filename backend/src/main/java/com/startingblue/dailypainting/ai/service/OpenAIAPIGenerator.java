@@ -1,5 +1,6 @@
 package com.startingblue.dailypainting.ai.service;
 
+import com.startingblue.dailypainting.ai.exception.OpenAIError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -26,8 +27,7 @@ public class OpenAIAPIGenerator {
             responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
             log.info("OpenAI Response: {}", responseEntity.getBody());
         } catch (Exception e) {
-            log.error("OpenAI API 호출 에러", e);
-            throw new RuntimeException("OpenAI API 호출 에러", e);
+            throw new OpenAIError("OpenAI API 호출 에러", e);
         }
         return responseEntity.getBody();
     }

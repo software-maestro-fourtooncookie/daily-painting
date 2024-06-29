@@ -9,6 +9,6 @@ public interface DiaryConvertService {
 
     String convertDiarySaveRequestToString(final DiarySaveRequest diarySaveRequest);
 
-    String convertSynopsisJsonToString(final JsonNode synopsis);
+    String convertScenarioJsonToString(final JsonNode scenario);
 
 }

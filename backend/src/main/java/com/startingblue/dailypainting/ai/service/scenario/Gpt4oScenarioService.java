@@ -1,9 +1,12 @@
-package com.startingblue.dailypainting.ai.service;
+package com.startingblue.dailypainting.ai.service.scenario;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.startingblue.dailypainting.ai.exception.JsonAIError;
+import com.startingblue.dailypainting.ai.service.OpenAIAPIGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class Gpt4oSynarioService implements SynarioService {
+public class Gpt4oScenarioService implements ScenarioService {
 
     private static final String LLM_API_URL = "https://api.openai.com/v1/chat/completions";
     private static final String LLM_MODEL = "gpt-4o";
@@ -27,9 +30,9 @@ public class Gpt4oSynarioService implements SynarioService {
     public JsonNode sendDiaryToLLM(final String diaryContent) {
         String requestBody = createRequestBody(diaryContent);
         String responseBody = openAIAPIGenerator.responseBodyFromAPI(requestBody, LLM_API_URL);
-        JsonNode synopsis = extractJsonFromLLMResponse(responseBody);
-        log.info("LLM synopsis: {}", synopsis.toPrettyString());
-        return synopsis;
+        JsonNode scenario = extractJsonFromLLMResponse(responseBody);
+        log.info("LLM scenario: {}", scenario.toPrettyString());
+        return scenario;
     }
 
     private JsonNode extractJsonFromLLMResponse(final String responseBody) {
@@ -39,9 +42,8 @@ public class Gpt4oSynarioService implements SynarioService {
             JsonNode content = root.path("choices").get(0).get("message").get("content");
             ObjectMapper objectMapper2 = new ObjectMapper();
             return objectMapper2.readTree(content.asText());
-        } catch (IOException e) {
-            log.error("LLM JSON 추출 에러", e);
-            throw new RuntimeException("허용되지 않는 LLM JSON 입니다.", e);
+        } catch (Exception e) {
+            throw new JsonAIError("LLM responseBody Json parsing 에러", e);
         }
     }
 
@@ -65,18 +67,9 @@ public class Gpt4oSynarioService implements SynarioService {
             userMessage.put("content", content);
             messagesArray.add(userMessage);
 
-            // JSON 문자열로 변환
-            String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-
-            // 출력
-            System.out.println(jsonString);
-
-            return jsonString;
-
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new JsonAIError("Scenario requestBody 구성 에러", e);
         }
-
-        return "";
     }
 }

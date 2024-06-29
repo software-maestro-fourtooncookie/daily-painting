@@ -1,8 +1,10 @@
-package com.startingblue.dailypainting.ai.service;
+package com.startingblue.dailypainting.ai.service.vision;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.startingblue.dailypainting.ai.exception.JsonAIError;
+import com.startingblue.dailypainting.ai.service.OpenAIAPIGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +28,8 @@ public class Dalle3VisionService implements VisionService {
 
     private final OpenAIAPIGenerator openAIAPIGenerator;
 
-    public String sendSynopsisToVision(final String synopsis) {
-        String visionPrompt = createVisionPromptFromSynopsis(synopsis);
+    public String sendScenarioToVision(final String scenario) {
+        String visionPrompt = createVisionPromptFromScenario(scenario);
         String requestBody = createRequestBody(visionPrompt);
         String responseBody = openAIAPIGenerator.responseBodyFromAPI(requestBody, VISION_API_URL);
         String imageUrl = extractImageUrlFromVisionResponse(responseBody);
@@ -41,13 +43,12 @@ public class Dalle3VisionService implements VisionService {
             JsonNode root = objectMapper.readTree(responseBody);
             JsonNode dataNode = root.path("data").get(0);
             return dataNode.path("url").asText();
-        } catch (IOException e) {
-            log.error("Vision URL 추출 에러", e);
-            throw new RuntimeException("존재하지 않는 Vision URL 입니다.", e);
+        } catch (Exception e) {
+            throw new JsonAIError("Vision responseBody Json parsing 에러", e);
         }
     }
 
-    private String createVisionPromptFromSynopsis(String scenePrompts) {
+    private String createVisionPromptFromScenario(String scenePrompts) {
         return String.format(VISION_PROMPT, scenePrompts);
     }
 
@@ -65,7 +66,7 @@ public class Dalle3VisionService implements VisionService {
             // Convert JSON object to string
             return objectMapper.writeValueAsString(rootNode);
         } catch (Exception e) {
-            throw new RuntimeException("Error creating JSON request body", e);
+            throw new JsonAIError("Vision requestBody 구성 에러", e);
         }
     }
 }
