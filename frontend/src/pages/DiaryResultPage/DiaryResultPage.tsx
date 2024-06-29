@@ -4,23 +4,39 @@ import './DiaryResultPage.css';
 import DiaryImageLayout from "../../components/diaryresult/DiaryImageLayout/DiaryImageLayout";
 import FeedbackRoutingButtonLayout from "../../components/diaryresult/FeedbackRoutingButtonLayout/FeedbackRoutingButtonLayout";
 import { useNavigate, NavigateFunction, useLocation } from 'react-router-dom';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useEffect } from 'react';
 
 // TODO: 추후에는 상수로 분리하여 관리할 수 있도록 수정
-const FeedbackPageUrl = '/feedback'; // TODO: Update this URL to the correct feedback page URL
-const ApiUrl = 'http://localhost:8080/proxy'; // TODO: Update this URL to the correct API URL
+const FEEDBACK_PAGE_URL = '/feedback'; // TODO: Update this URL to the correct feedback page URL
+const API_URL = process.env.REACT_APP_API_BASE_URL + '/proxy'; // TODO: Update this URL to the correct API URL
 
-const DiaryResultPage = () => { 
+const DiaryResultPage = () => {
     const {state} = useLocation();
-    const {imageUrl, diaryId, ...rest} = state;
-
-    console.log("imageUrl: " + imageUrl)
-    console.log("diaryId: " + diaryId)
 
     const navigate: NavigateFunction = useNavigate();
 
-    const handleImageDownloadClick: MouseEventHandler<HTMLButtonElement> = () => { // TODO: Fix CORS policy issue
-        const proxyUrl = ApiUrl + `?url=${encodeURIComponent(imageUrl)}`;
+    useEffect(() => {
+        if (!state || !state.imageUrl || !state.diaryId) {
+                console.error("state, imageUrl, or diaryId is null");
+                console.error("state: " + state);
+                navigate("/", { replace: true });
+            }
+    }, [navigate, state]); // 렌더링 이후 실행
+
+    if (!state || !state.imageUrl || !state.diaryId) {
+        alert("잘못된 접근입니다. 첫 화면으로 이동합니다.");
+        return null;
+    }
+
+    const {imageUrl, diaryId, ...rest} = state;
+
+    console.log("DiaryResultPage 접속")
+    console.log("imageUrl: " + imageUrl)
+    console.log("diaryId: " + diaryId)
+
+
+    const handleImageDownloadClick: MouseEventHandler<HTMLButtonElement> = () => {
+        const proxyUrl = API_URL + `?url=${encodeURIComponent(imageUrl)}`;
         fetch(proxyUrl, { method: 'GET' })
             .then(response => {
                 if (!response.ok) {
@@ -42,15 +58,15 @@ const DiaryResultPage = () => {
     };
 
     const handleFeedbackClick: MouseEventHandler<HTMLButtonElement> = () => { // TODO: FeedbackPageUrl에 맞추어서 수정 필요
-        navigate(FeedbackPageUrl, { state: { diaryId: diaryId } }); 
+        navigate(FEEDBACK_PAGE_URL, { state: { diaryId: diaryId } }); 
     };
 
     
     return (
-    <div className="DiaryResultPage">
-        <DiaryImageLayout imageUrl={imageUrl} onImageDownloadClick={handleImageDownloadClick}/>
-        <FeedbackRoutingButtonLayout onFeedbackClick={handleFeedbackClick}/>
-    </div>
+        <div className="diary-result-page">
+            <DiaryImageLayout imageUrl={imageUrl} onImageDownloadClick={handleImageDownloadClick}/>
+            <FeedbackRoutingButtonLayout onFeedbackClick={handleFeedbackClick}/>
+        </div>
     );
 }
 

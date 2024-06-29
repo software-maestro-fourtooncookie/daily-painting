@@ -1,4 +1,4 @@
-.feedbackbutton {
+.feedback-button {
     margin-top: 1.5rem;
 
     display: inline-flex; 
@@ -19,7 +19,7 @@
     color: whitesmoke;
 }
 
-.feedbackbutton:hover {
+.feedback-button:hover {
     background-color: rgb(85 85 85);
 }
 

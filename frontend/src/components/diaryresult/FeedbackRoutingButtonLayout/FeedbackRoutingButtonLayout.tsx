@@ -2,7 +2,7 @@ import { MouseEventHandler } from 'react';
 import './FeedbackRoutingButtonLayout.css';
 
 export interface FeedbackRoutingButtonLayoutProps {
-    onFeedbackClick: MouseEventHandler<HTMLButtonElement>
+    onFeedbackClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 const FeedbackRoutingButtonLayout = (props: FeedbackRoutingButtonLayoutProps) => {
@@ -10,7 +10,7 @@ const FeedbackRoutingButtonLayout = (props: FeedbackRoutingButtonLayoutProps) =>
     
     return (
         <button 
-            className="feedbackbutton" 
+            className="feedback-button" 
             onClick={onFeedbackClick}
         >
             Feedback

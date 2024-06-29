@@ -1,4 +1,4 @@
-.DiaryImageLayout {
+.diary-image-layout {
     display: flex; 
     position: relative; 
     justify-content: center; 
@@ -8,11 +8,11 @@
     max-height: 80%;
 }
 
-.diaryimage {
+.diary-image {
     object-fit: contain; 
 }
 
-.diaryimagedownloadbutton {
+.diary-image-download-button {
     position: absolute; 
     right: 1rem; 
     bottom: 1rem; 
