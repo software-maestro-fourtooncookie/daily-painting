@@ -6,13 +6,15 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public final class DiaryService {
+@Transactional
+public class DiaryService {
 
     private final DiaryRepository diaryRepository;
 
@@ -39,11 +41,10 @@ public final class DiaryService {
     }
 
     public void updateDiaryImagePath(final Long diaryId, final String imageUrl) {
-        Diary diary = diaryRepository.findById(diaryId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 일기 입니다."));
+            Diary diary = diaryRepository.findById(diaryId)
+                    .orElseThrow(() -> new EntityNotFoundException("Diary with ID " + diaryId + " not found"));
 
-        diary.updateImageUrl(imageUrl);
-        diaryRepository.save(diary);
+            diary.updateImageUrl(imageUrl);
+            diaryRepository.save(diary);
     }
-
 }

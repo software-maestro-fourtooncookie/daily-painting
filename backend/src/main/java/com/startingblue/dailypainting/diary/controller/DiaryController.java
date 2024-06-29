@@ -8,12 +8,14 @@ import com.startingblue.dailypainting.diary.dto.DiarySaveRequest;
 import com.startingblue.dailypainting.diary.dto.DiaryFormResponse;
 import com.startingblue.dailypainting.diary.dto.DiarySavedResponse;
 import com.startingblue.dailypainting.diary.service.DiaryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -34,8 +36,9 @@ public final class DiaryController {
     }
 
     @PostMapping("/api/diaries")
-    public ResponseEntity<DiarySavedResponse> createDiary(@RequestBody DiarySaveRequest diarySaveRequest,
-                                                          UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> createDiary(@Valid @RequestBody DiarySaveRequest diarySaveRequest,
+                                         BindingResult bindingResult) {
+
         Long savedDiaryId = diaryService.save(diarySaveRequest);
 
         CompletableFuture<String> future = openAIService.generateImageFromDiary(diarySaveRequest);
@@ -44,10 +47,7 @@ public final class DiaryController {
         diaryService.updateDiaryImagePath(savedDiaryId, imageUrl);
 
         DiarySavedResponse diarySavedResponse = new DiarySavedResponse(savedDiaryId, imageUrl);
-        URI location = uriBuilder.path("/diaries/show")
-                .build()
-                .toUri();
 
-        return ResponseEntity.created(location).body(diarySavedResponse);
+        return ResponseEntity.ok(diarySavedResponse);
     }
 }
