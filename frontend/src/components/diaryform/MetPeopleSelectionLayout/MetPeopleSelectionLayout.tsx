@@ -14,18 +14,38 @@ const MetPeopleSelectionLayout = (props: MetPeopleSelectionLayoutProps) => {
         <div className="met-people-selection">
             <label className="people-label">만난 사람</label>
             <div className="people-options">
-                {metPeople.map((person, index) =>
-                    PersonOption(
-                        person,
-                        selectedPeople,
-                        onMetPeopleClick,
-                        index
-                    )
-                )}
+                {metPeople.map((person, index) => (
+                    <PersonOption
+                        key={index}
+                        person={person}
+                        isSelected={selectedPeople.includes(person)}
+                        onMetPeopleClick={onMetPeopleClick}
+                    />
+                ))}
             </div>
             <p className="selected-people">
                 Selected People: {selectedPeople.join(", ")}
             </p>
+        </div>
+    );
+};
+
+export interface PersonOptionProps {
+    person: string;
+    isSelected: boolean;
+    onMetPeopleClick: (person: string) => void;
+}
+
+const PersonOption = (props: PersonOptionProps) => {
+    const { person, isSelected, onMetPeopleClick } = props;
+
+    return (
+        <div
+            className={`people-option ${isSelected ? "selected" : ""}`}
+            onClick={() => onMetPeopleClick(person)}
+        >
+            <img src={getIcon(person)} alt={person} className="people-icon" />
+            <label className="met-people-option-label">{person}</label>
         </div>
     );
 };
@@ -37,23 +57,5 @@ const getIcon = (person: string) => {
         return require("../icon/metperson/DEFAULT.png");
     }
 };
-
-const PersonOption = (
-    person: string,
-    selectedPeople: string[],
-    onMetPeopleClick: (person: string) => void,
-    index: number
-) => (
-    <div
-        className={`people-option ${
-            selectedPeople.includes(person) ? "selected" : ""
-        }`}
-        key={index}
-        onClick={() => onMetPeopleClick(person)}
-    >
-        <img src={getIcon(person)} alt={person} className="people-icon" />
-        <label className="met-people-option-label">{person}</label>
-    </div>
-);
 
 export default MetPeopleSelectionLayout;

@@ -1,6 +1,7 @@
 .met-people-selection {
+    width: 100%;
     font-family: Arial, sans-serif;
-    margin: 20px;
+    align-items: center;
 }
 
 .met-people-selection .people-label {
@@ -14,6 +15,7 @@
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 10px;
+    justify-content: space-between;
 }
 
 .met-people-selection .people-option {

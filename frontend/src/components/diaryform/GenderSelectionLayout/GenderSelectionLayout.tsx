@@ -3,14 +3,14 @@ import "./GenderSelectionLayout.css";
 
 export interface GenderSelectionLayoutProps {
     gender: string;
-    setGender: (gender: string) => void;
+    onChange: (gender: string) => void;
 }
 
 const GenderSelectionLayout = (props: GenderSelectionLayoutProps) => {
-    const { gender, setGender } = props;
+    const { gender, onChange } = props;
 
     const handleGenderChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setGender(event.target.value);
+        onChange(event.target.value);
     };
 
     return (

@@ -14,14 +14,14 @@ const EmotionSelectionLayout = (props: EmotionSelectionLayoutProps) => {
         <div className="emotion-selection">
             <label className="emotion-label">감정</label>
             <div className="emotion-options">
-                {emotions.map((emotion, index) =>
-                    EmotionOption(
-                        emotion,
-                        selectedEmotions,
-                        onEmotionClick,
-                        index
-                    )
-                )}
+                {emotions.map((emotion, index) => (
+                    <EmotionOption
+                        key={index}
+                        emotion={emotion}
+                        isSelected={selectedEmotions.includes(emotion)}
+                        onEmotionClick={onEmotionClick}
+                    />
+                ))}
             </div>
             <p className="selected-emotions">
                 Selected Emotions: {selectedEmotions.join(", ")}
@@ -30,33 +30,36 @@ const EmotionSelectionLayout = (props: EmotionSelectionLayoutProps) => {
     );
 };
 
-const getEmotionIcon = (emotion: string) => {
-    try {
-        return require(`../icon/emotion/${emotion}.png`);
-    } catch (error) {
-        return require("../icon/emotion/DEFAULT.png");
-    }
+export interface EmotionOptionProps {
+    emotion: string;
+    isSelected: boolean;
+    onEmotionClick: (emotion: string) => void;
+}
+
+const EmotionOption = (props: EmotionOptionProps) => {
+    const { emotion, isSelected, onEmotionClick } = props;
+
+    const getEmotionIcon = (emotion: string) => {
+        try {
+            return require(`../icon/emotion/${emotion}.png`);
+        } catch (error) {
+            return require("../icon/emotion/DEFAULT.png");
+        }
+    };
+
+    return (
+        <div
+            className={`emotion-option ${isSelected ? "selected" : ""}`}
+            onClick={() => onEmotionClick(emotion)}
+        >
+            <img
+                src={getEmotionIcon(emotion)}
+                alt={emotion}
+                className="emotion-icon"
+            />
+            <label className="emotion-option-label">{emotion}</label>
+        </div>
+    );
 };
 
-const EmotionOption = (
-    emotion: string,
-    selectedEmotions: string[],
-    onEmotionClick: (emotion: string) => void,
-    index: number
-) => (
-    <div
-        className={`emotion-option ${
-            selectedEmotions.includes(emotion) ? "selected" : ""
-        }`}
-        key={index}
-        onClick={() => onEmotionClick(emotion)}
-    >
-        <img
-            src={getEmotionIcon(emotion)}
-            alt={emotion}
-            className="emotion-icon"
-        />
-        <label className="emotion-option-label">{emotion}</label>
-    </div>
-);
 export default EmotionSelectionLayout;

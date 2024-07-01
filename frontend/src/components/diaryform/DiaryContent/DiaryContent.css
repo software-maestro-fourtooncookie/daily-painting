@@ -1,21 +1,36 @@
-.diary-content {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-.diary-content label {
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.diary-content textarea {
+.content {
     width: 100%;
-    height: 100px;
     padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     box-sizing: border-box;
-    resize: vertical;
+}
+
+textarea {
+    width: 100%;
+    height: 100px; /* Adjust the height as needed */
+    padding: 10px;
+    font-size: 16px;
+}
+
+.content-error {
+    color: red;
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }

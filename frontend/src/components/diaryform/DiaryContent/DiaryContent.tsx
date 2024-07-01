@@ -1,25 +1,24 @@
-import React, { ChangeEvent, FormEvent } from "react";
+import React, { ChangeEventHandler } from "react";
 import "./DiaryContent.css";
 
 export interface DiaryContentProps {
     content: string;
-    setContent: (content: string) => void;
+    onContentChange: ChangeEventHandler;
+    isShaking: boolean;
 }
 
 const DiaryContent = (props: DiaryContentProps) => {
-    const { content, setContent } = props;
-
-    const handleDiaryContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setContent(e.target.value);
-    };
+    const { content, onContentChange, isShaking, ...rest } = props;
 
     return (
-        <div className="diary-content">
-            <label>한줄일기</label>
+        <div className="content">
             <textarea
+                className={isShaking ? "content-error" : ""}
                 value={content}
-                onChange={handleDiaryContentChange}
-            ></textarea>
+                placeholder="오늘의 일기를 작성하세요"
+                onChange={onContentChange}
+                {...rest}
+            />
         </div>
     );
 };

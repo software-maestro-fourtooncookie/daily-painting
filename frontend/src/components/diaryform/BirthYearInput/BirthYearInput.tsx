@@ -3,14 +3,14 @@ import "./BirthYearInput.css";
 
 export interface BirthYearInputProps {
     birthYear: number;
-    setBirthYear: (birthYear: number) => void;
+    onChange: (birthYear: number) => void;
 }
 
 const BirthYearInput = (props: BirthYearInputProps) => {
-    const { birthYear, setBirthYear } = props;
+    const { birthYear, onChange } = props;
 
     const handleBirthYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        setBirthYear(Number(e.target.value));
+        onChange(Number(e.target.value));
     };
 
     const generateYearOptions = (): JSX.Element[] => {

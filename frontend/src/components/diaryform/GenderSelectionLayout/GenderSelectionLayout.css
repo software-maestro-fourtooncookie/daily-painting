@@ -1,7 +1,8 @@
 .gender-selection {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     margin: 20px;
 }
 

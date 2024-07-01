@@ -1,6 +1,7 @@
 .emotion-selection {
+    width: 100%;
     font-family: Arial, sans-serif;
-    margin: 20px;
+    align-items: center;
 }
 
 .emotion-selection .emotion-label {
@@ -11,9 +12,9 @@
 
 .emotion-selection .emotion-options {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
     margin-bottom: 10px;
+    justify-content: space-between;
 }
 
 .emotion-selection .emotion-options .emotion-option-label {
